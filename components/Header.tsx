@@ -136,19 +136,6 @@ export const Header: React.FC<HeaderProps> = ({
                   Why GTS
                 </a>
                 <a
-                  href='#ecosystem'
-                  className='text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors'
-                  onClick={(e) => {
-                    e.preventDefault();
-                    const element = document.querySelector('#ecosystem');
-                    if (element) {
-                      element.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }}
-                >
-                  Ecosystem
-                </a>
-                <a
                   href='#try-gts'
                   className='text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors'
                   onClick={(e) => {
@@ -160,6 +147,19 @@ export const Header: React.FC<HeaderProps> = ({
                   }}
                 >
                   Try GTS
+                </a>
+                <a
+                  href='#ecosystem'
+                  className='text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.querySelector('#ecosystem');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  Ecosystem
                 </a>
                 <Link
                   to='/docs/introduction'
@@ -261,20 +261,6 @@ export const Header: React.FC<HeaderProps> = ({
               Why GTS
             </a>
             <a
-              href='#ecosystem'
-              className='block px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-900 rounded-md transition-colors'
-              onClick={(e) => {
-                e.preventDefault();
-                const element = document.querySelector('#ecosystem');
-                if (element) {
-                  element.scrollIntoView({ behavior: 'smooth' });
-                }
-                setIsMobileMenuOpen(false);
-              }}
-            >
-              Ecosystem
-            </a>
-            <a
               href='#try-gts'
               className='block px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-900 rounded-md transition-colors'
               onClick={(e) => {
@@ -287,6 +273,20 @@ export const Header: React.FC<HeaderProps> = ({
               }}
             >
               Try GTS
+            </a>
+            <a
+              href='#ecosystem'
+              className='block px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-900 rounded-md transition-colors'
+              onClick={(e) => {
+                e.preventDefault();
+                const element = document.querySelector('#ecosystem');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+                }
+                setIsMobileMenuOpen(false);
+              }}
+            >
+              Ecosystem
             </a>
             <Link
               to='/docs/introduction'
