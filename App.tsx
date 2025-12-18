@@ -3,10 +3,12 @@ import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { Landing } from './pages/Landing';
 import { DocPage } from './pages/DocPage';
+import { ScrollToTop } from './components/ScrollToTop';
 
 const App: React.FC = () => {
   return (
     <HashRouter>
+      <ScrollToTop />
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<Landing />} />

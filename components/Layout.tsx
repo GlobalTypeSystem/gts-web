@@ -17,7 +17,9 @@ export const Layout: React.FC = () => {
         showMenuButton={isDocs}
       />
 
-      <div className={`flex flex-1 items-start ${isLanding ? '' : 'container max-w-screen-2xl mx-auto'}`}>
+      <div
+        className={`flex flex-1 items-start ${isLanding ? '' : 'container max-w-screen-2xl mx-auto'}`}
+      >
         {isDocs && (
           <Sidebar
             isOpen={isSidebarOpen}
