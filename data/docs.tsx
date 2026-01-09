@@ -498,6 +498,43 @@ gts.x.ui.left_menu.menu_item.v1[screen_type="gts.x.ui.core_ui.screens.v1~abc.*"]
         </p>
 
         <h2 className='text-2xl font-bold mb-4 mt-8 text-slate-900 dark:text-white'>
+          Wildcard Queries
+        </h2>
+        <p className='mb-4'>
+          Use trailing wildcards (<code>*</code>) to match multiple identifiers
+          with a common prefix. Wildcards are powerful for finding all related
+          schemas or instances.
+        </p>
+        <CodeBlock
+          code={`# Find all items from vendor 'x.core'
+gts.x.core.acm.user_setting.v1~x.core.*
+
+# Find all v1.x versions of a schema
+gts.x.llm.chat.message.v1.*
+
+# Find all derived types of a base schema
+gts.x.core.events.type.v1~*
+
+# Query with wildcard in predicate (access control)
+gts.x.ui.left_menu.menu_item.v1[screen_type="gts.x.ui.core_ui.screens.v1~abc.*"]`}
+        />
+        <div className='bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg border border-amber-200 dark:border-amber-800 mb-8'>
+          <h5 className='font-bold text-amber-800 dark:text-amber-200'>
+            Wildcard Rules
+          </h5>
+          <ul className='text-sm text-amber-700 dark:text-amber-300 mt-2 list-disc pl-5 space-y-1'>
+            <li>
+              Wildcard must appear at the <strong>end</strong> of the pattern
+            </li>
+            <li>
+              Only <strong>one</strong> wildcard per pattern is allowed
+            </li>
+            <li>Pattern must start at a valid segment boundary</li>
+            <li>Wildcards match any sequence including chain separators (~)</li>
+          </ul>
+        </div>
+
+        <h2 className='text-2xl font-bold mb-4 mt-8 text-slate-900 dark:text-white'>
           Attribute Selector
         </h2>
         <p className='mb-4'>

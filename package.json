@@ -6,17 +6,20 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prettier": "prettier --write '**/*.{ts,tsx,js,jsx}'",
+    "prettier:check": "prettier --check '**/*.{ts,tsx,js,jsx}'"
   },
   "dependencies": {
-    "react-router-dom": "^7.9.6",
+    "lucide-react": "^0.554.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "lucide-react": "^0.554.0"
+    "react-router-dom": "^7.9.6"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "prettier": "^3.7.4",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
   }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Menu, Search, Moon, Sun, Github, Linkedin } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Menu, Search, Moon, Sun, Github, Linkedin, X } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 import { SearchModal } from './SearchModal';
 
 interface HeaderProps {
@@ -17,12 +17,15 @@ export const Header: React.FC<HeaderProps> = ({
     return document.documentElement.classList.contains('dark');
   });
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const isLanding = location.pathname === '/' || location.pathname === '';
 
   // Sync state with DOM on mount (no DOM manipulation needed, just sync state)
   useEffect(() => {
     const currentTheme = document.documentElement.classList.contains('dark');
     setIsDark(currentTheme);
-    
+
     // Set localStorage if not set
     if (!localStorage.theme) {
       localStorage.theme = currentTheme ? 'dark' : 'light';
@@ -65,6 +68,16 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
         )}
 
+        {/* Mobile Menu Button for Landing Page */}
+        {isLanding && !showMenuButton && (
+          <button
+            className='lg:hidden mr-4 p-2 text-slate-500 hover:text-slate-700'
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        )}
+
         <Link to='/' className='mr-6 flex items-center space-x-2'>
           <div className='h-8 w-auto flex items-center justify-center'>
             <img
@@ -93,6 +106,70 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           <nav className='flex items-center space-x-1'>
+            {/* Navigation Menu - Desktop */}
+            {isLanding && (
+              <div className='hidden lg:flex items-center space-x-6 mr-6'>
+                <a
+                  href='#about'
+                  className='text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.querySelector('#about');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  About
+                </a>
+                <a
+                  href='#why-gts'
+                  className='text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.querySelector('#why-gts');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  Why GTS
+                </a>
+                <a
+                  href='#try-gts'
+                  className='text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.querySelector('#try-gts');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  Try GTS
+                </a>
+                <a
+                  href='#ecosystem'
+                  className='text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.querySelector('#ecosystem');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  Ecosystem
+                </a>
+                <Link
+                  to='/docs/introduction'
+                  className='text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors'
+                >
+                  Docs
+                </Link>
+              </div>
+            )}
+
             <button
               onClick={() => setIsSearchOpen(true)}
               className='sm:hidden h-9 w-9 inline-flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400'
@@ -150,6 +227,77 @@ export const Header: React.FC<HeaderProps> = ({
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
       />
+
+      {/* Mobile Navigation Menu */}
+      {isLanding && isMobileMenuOpen && (
+        <div className='lg:hidden absolute top-16 left-0 right-0 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 shadow-lg z-40'>
+          <nav className='flex flex-col space-y-1 p-4'>
+            <a
+              href='#about'
+              className='block px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-900 rounded-md transition-colors'
+              onClick={(e) => {
+                e.preventDefault();
+                const element = document.querySelector('#about');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+                }
+                setIsMobileMenuOpen(false);
+              }}
+            >
+              About
+            </a>
+            <a
+              href='#why-gts'
+              className='block px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-900 rounded-md transition-colors'
+              onClick={(e) => {
+                e.preventDefault();
+                const element = document.querySelector('#why-gts');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+                }
+                setIsMobileMenuOpen(false);
+              }}
+            >
+              Why GTS
+            </a>
+            <a
+              href='#try-gts'
+              className='block px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-900 rounded-md transition-colors'
+              onClick={(e) => {
+                e.preventDefault();
+                const element = document.querySelector('#try-gts');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+                }
+                setIsMobileMenuOpen(false);
+              }}
+            >
+              Try GTS
+            </a>
+            <a
+              href='#ecosystem'
+              className='block px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-900 rounded-md transition-colors'
+              onClick={(e) => {
+                e.preventDefault();
+                const element = document.querySelector('#ecosystem');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+                }
+                setIsMobileMenuOpen(false);
+              }}
+            >
+              Ecosystem
+            </a>
+            <Link
+              to='/docs/introduction'
+              className='block px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-900 rounded-md transition-colors'
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Docs
+            </Link>
+          </nav>
+        </div>
+      )}
     </header>
   );
 };
