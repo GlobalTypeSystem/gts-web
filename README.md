@@ -31,3 +31,5 @@ npm run preview
 Deployment is automated via GitHub Actions:
 - On push to main, the workflow builds the site and publishes the dist/ folder to GitHub Pages.
 - The custom domain is globaltypesystem.org.
+
+
