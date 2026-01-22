@@ -14,15 +14,19 @@ export const GTSValidator: React.FC = () => {
   const [copied, setCopied] = useState(false);
 
   const examples = [
-    { label: 'Simple Schema', value: 'gts.x.core.events.type.v1~' },
-    { label: 'Instance', value: 'gts.vendor.app.user.profile.v2.1' },
+    { label: 'Schema', value: 'gts.x.core.events.type.v1~' },
     {
-      label: 'Chained',
-      value: 'gts.x.core.events.type.v1~vendor.app._.custom.v1~',
+      label: 'Instance',
+      value: 'gts.x.core.events.topic.v1~x.commerce._.orders.v1.0',
     },
     {
-      label: 'Complex Chain',
-      value: 'gts.x.core.acm.user.v1~ven.app._.admin.v1.2',
+      label: 'Chain Schema',
+      value: 'gts.x.core.events.topic.v1~x.commerce._.orders.v1.0~',
+    },
+    {
+      label: 'Chain Instance',
+      value:
+        'gts.x.core.acm.user.v1~ven.app._.admin.v1.2~org.system._.permissions.v2.1',
     },
   ];
 
@@ -64,6 +68,16 @@ export const GTSValidator: React.FC = () => {
     } else {
       if (SINGLE_SEGMENT_REGEX.test(trimmed)) {
         const endsWithTilde = trimmed.endsWith('~');
+
+        // GTS v0.7: Reject single-segment instances
+        if (!endsWithTilde) {
+          return {
+            isValid: false,
+            message:
+              'Single-segment instance identifiers are prohibited in GTS v0.7. Well-known instances MUST include a left-hand type segment in a chain (e.g., gts.x.core.events.topic.v1~x.commerce._.orders.v1.0)',
+          };
+        }
+
         return {
           isValid: true,
           message: `Valid GTS ${endsWithTilde ? 'schema (type)' : 'instance'} identifier`,
@@ -227,9 +241,11 @@ export const GTSValidator: React.FC = () => {
         )}
 
         {/* Info Footer */}
-        <div className='px-4 py-2 bg-slate-800/30 border-t border-slate-700 flex items-center gap-2 text-xs text-slate-500'>
-          <AlertCircle size={14} />
-          <span>Real-time validation using official GTS regex patterns</span>
+        <div className='px-4 py-2 bg-slate-800/30 border-t border-slate-700 text-xs text-slate-500 space-y-2'>
+          <div className='flex items-center gap-2'>
+            <AlertCircle size={14} />
+            <span>Real-time validation using official GTS regex patterns</span>
+          </div>
         </div>
       </div>
 
