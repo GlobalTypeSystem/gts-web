@@ -652,6 +652,39 @@ print(uuid.uuid5(GTS_NS, "gts.x.core.events.type.v1~"))`}
         </ul>
 
         <h3 className='text-xl font-semibold mb-4 text-slate-900 dark:text-white'>
+          JSON Schema Conventions
+        </h3>
+        <div className='space-y-4 mb-8'>
+          <div>
+            <h4 className='font-bold text-slate-900 dark:text-slate-200'>
+              <code>$id</code> and <code>$ref</code> Fields
+            </h4>
+            <p className='text-slate-600 dark:text-slate-400 text-sm mb-2'>
+              In JSON Schema, <code>$id</code> and <code>$ref</code> fields{' '}
+              <strong>
+                must use the <code>gts://</code> prefix
+              </strong>{' '}
+              to make them URI-compatible:
+            </p>
+            <pre className='bg-slate-100 dark:bg-slate-800 p-3 rounded text-xs overflow-x-auto'>
+              {`{
+  "$id": "gts://gts.x.core.events.type.v1~",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "allOf": [
+    { "$ref": "gts://gts.x.core.events.base.v1~" }
+  ]
+}`}
+            </pre>
+            <p className='text-slate-600 dark:text-slate-400 text-sm mt-2'>
+              <strong>Note:</strong> The canonical GTS identifier (without{' '}
+              <code>gts://</code>) is used everywhere else: runtime validation,
+              database storage, API responses, and JSON instance <code>id</code>{' '}
+              or <code>type</code> fields.
+            </p>
+          </div>
+        </div>
+
+        <h3 className='text-xl font-semibold mb-4 text-slate-900 dark:text-white'>
           Integration Support
         </h3>
         <div className='space-y-4'>

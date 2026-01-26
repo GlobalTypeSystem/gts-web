@@ -43,7 +43,7 @@ export const Landing: React.FC = () => {
           >
             <div className='rounded-2xl bg-slate-100 dark:bg-slate-900 px-4 py-1.5 text-sm font-medium text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 animate-fadeIn flex items-center gap-2'>
               <Sparkles size={14} className='text-brand-500' />
-              Draft Version 0.5 is now available
+              Draft Version 0.7 is now available
             </div>
             <h1 className='font-sans text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-5xl md:text-6xl lg:text-7xl animate-slideUp stagger-1'>
               A Universal Language <br className='hidden sm:inline' />
@@ -127,7 +127,15 @@ export const Landing: React.FC = () => {
                   Human-readable schemas
                 </h3>
                 <p className='text-sm text-slate-600 dark:text-slate-400'>
-                  Simple JSON-based format, no binary serialization.
+                  Simple JSON-based format, no binary serialization.{' '}
+                  <a
+                    href='https://github.com/GlobalTypeSystem/gts-spec/tree/main/examples'
+                    target='_blank'
+                    rel='noreferrer'
+                    className='text-purple-500 hover:text-purple-600 dark:text-purple-400 dark:hover:text-purple-300 underline'
+                  >
+                    Learn more →
+                  </a>
                 </p>
               </div>
             </div>
@@ -183,15 +191,18 @@ export const Landing: React.FC = () => {
         </section>
 
         {/* TRY GTS - Interactive Validator Section */}
-        <section id='try-gts' className='py-16 md:py-24 border-t border-slate-100 dark:border-slate-900 bg-slate-50 dark:bg-slate-900/30'>
+        <section
+          id='try-gts'
+          className='py-16 md:py-24 border-t border-slate-100 dark:border-slate-900 bg-slate-50 dark:bg-slate-900/30'
+        >
           <div className='container mx-auto px-4'>
             <div className='max-w-4xl mx-auto text-center mb-12'>
               <h2 className='text-3xl md:text-4xl font-bold mb-4 text-slate-900 dark:text-white'>
                 Try GTS now
               </h2>
               <p className='text-slate-600 dark:text-slate-400 text-lg'>
-                See real-time validation against the definitive GTS system rules.
-                Enter or modify any GTS identifier below
+                See real-time validation against the definitive GTS system
+                rules. Enter or modify any GTS identifier below
               </p>
             </div>
             <GTSValidator />
@@ -207,84 +218,84 @@ export const Landing: React.FC = () => {
             The GTS ecosystem
           </h2>
           <div className='max-w-3xl mx-auto grid gap-4 md:grid-cols-2'>
-            <div className='p-4 border-l-4 border-brand-600 bg-slate-50 dark:bg-slate-900/50 rounded-r-lg'>
+            <a
+              href='https://github.com/GlobalTypeSystem/gts-spec'
+              target='_blank'
+              rel='noreferrer'
+              className='block p-4 border-l-4 border-brand-600 bg-slate-50 dark:bg-slate-900/50 rounded-r-lg hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer'
+            >
               <strong className='text-brand-600 dark:text-brand-400'>
-                <a
-                  href='https://github.com/GlobalTypeSystem/gts-spec'
-                  target='_blank'
-                >
-                  gts-spec
-                </a>
+                gts-spec
               </strong>
               <p className='text-sm text-slate-600 dark:text-slate-400'>
                 The official specification
               </p>
-            </div>
-            <div className='p-4 border-l-4 border-brand-600 bg-slate-50 dark:bg-slate-900/50 rounded-r-lg'>
+            </a>
+            <a
+              href='https://github.com/GlobalTypeSystem/gts-cli'
+              target='_blank'
+              rel='noreferrer'
+              className='block p-4 border-l-4 border-brand-600 bg-slate-50 dark:bg-slate-900/50 rounded-r-lg hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer'
+            >
               <strong className='text-brand-600 dark:text-brand-400'>
-                <a
-                  href='https://github.com/GlobalTypeSystem/gts-cli'
-                  target='_blank'
-                >
-                  gts-cli
-                </a>
+                gts-cli
               </strong>
               <p className='text-sm text-slate-600 dark:text-slate-400'>
                 Validator and schema tooling
               </p>
-            </div>
-            <div className='p-4 border-l-4 border-brand-600 bg-slate-50 dark:bg-slate-900/50 rounded-r-lg'>
+            </a>
+            <a
+              href='https://github.com/GlobalTypeSystem/gts-python'
+              target='_blank'
+              rel='noreferrer'
+              className='block p-4 border-l-4 border-brand-600 bg-slate-50 dark:bg-slate-900/50 rounded-r-lg hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer'
+            >
               <strong className='text-brand-600 dark:text-brand-400'>
-                <a
-                  href='https://github.com/GlobalTypeSystem/gts-python'
-                  target='_blank'
-                >
-                  gts-python
-                </a>
+                gts-python
               </strong>
               <p className='text-sm text-slate-600 dark:text-slate-400'>
                 Typed Python bindings
               </p>
-            </div>
-            <div className='p-4 border-l-4 border-brand-600 bg-slate-50 dark:bg-slate-900/50 rounded-r-lg'>
+            </a>
+            <a
+              href='https://github.com/GlobalTypeSystem/gts-go'
+              target='_blank'
+              rel='noreferrer'
+              className='block p-4 border-l-4 border-brand-600 bg-slate-50 dark:bg-slate-900/50 rounded-r-lg hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer'
+            >
               <strong className='text-brand-600 dark:text-brand-400'>
-                <a
-                  href='https://github.com/GlobalTypeSystem/gts-go'
-                  target='_blank'
-                >
-                  gts-go
-                </a>
+                gts-go
               </strong>
               <p className='text-sm text-slate-600 dark:text-slate-400'>
                 Go type system implementation
               </p>
-            </div>
-            <div className='p-4 border-l-4 border-brand-600 bg-slate-50 dark:bg-slate-900/50 rounded-r-lg'>
+            </a>
+            <a
+              href='https://github.com/GlobalTypeSystem/gts-rust'
+              target='_blank'
+              rel='noreferrer'
+              className='block p-4 border-l-4 border-brand-600 bg-slate-50 dark:bg-slate-900/50 rounded-r-lg hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer'
+            >
               <strong className='text-brand-600 dark:text-brand-400'>
-                <a
-                  href='https://github.com/GlobalTypeSystem/gts-rust'
-                  target='_blank'
-                >
-                  gts-rust
-                </a>
+                gts-rust
               </strong>
               <p className='text-sm text-slate-600 dark:text-slate-400'>
                 Rust binding layer
               </p>
-            </div>
-            <div className='p-4 border-l-4 border-brand-600 bg-slate-50 dark:bg-slate-900/50 rounded-r-lg'>
+            </a>
+            <a
+              href='https://github.com/GlobalTypeSystem/gts-kit'
+              target='_blank'
+              rel='noreferrer'
+              className='block p-4 border-l-4 border-brand-600 bg-slate-50 dark:bg-slate-900/50 rounded-r-lg hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer'
+            >
               <strong className='text-brand-600 dark:text-brand-400'>
-                <a
-                  href='https://github.com/GlobalTypeSystem/gts-kit'
-                  target='_blank'
-                >
-                  gts-kit
-                </a>
+                gts-kit
               </strong>
               <p className='text-sm text-slate-600 dark:text-slate-400'>
                 Visual schema explorer
               </p>
-            </div>
+            </a>
           </div>
           <div className='text-center mt-8'>
             <a
@@ -389,9 +400,14 @@ export const Landing: React.FC = () => {
                       </h4>
                       <p className='text-slate-700 dark:text-slate-300 text-sm leading-relaxed'>
                         GTS eliminates fragmentation by introducing a{' '}
-                        <strong className='text-brand-600 dark:text-brand-400'>
+                        <a
+                          href='https://globaltypesystem.org/#/docs/introduction'
+                          target='_blank'
+                          rel='noreferrer'
+                          className='font-bold text-brand-600 dark:text-brand-400 hover:underline'
+                        >
                           single, universal type system
-                        </strong>{' '}
+                        </a>{' '}
                         shared across all platforms. One definition, infinite
                         compatibility.
                       </p>
