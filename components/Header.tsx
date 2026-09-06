@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Menu, Search, Moon, Sun, Github, Linkedin, X } from 'lucide-react';
+import { Menu, Search, Moon, Sun, Github, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { SearchModal } from './SearchModal';
 
@@ -123,6 +123,19 @@ export const Header: React.FC<HeaderProps> = ({
                   About
                 </a>
                 <a
+                  href='#what-is-gts'
+                  className='text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.querySelector('#what-is-gts');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  What is GTS
+                </a>
+                <a
                   href='#why-gts'
                   className='text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors'
                   onClick={(e) => {
@@ -134,6 +147,19 @@ export const Header: React.FC<HeaderProps> = ({
                   }}
                 >
                   Why GTS
+                </a>
+                <a
+                  href='#use-cases'
+                  className='text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.querySelector('#use-cases');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  Use cases
                 </a>
                 <a
                   href='#try-gts'
@@ -161,6 +187,19 @@ export const Header: React.FC<HeaderProps> = ({
                 >
                   Ecosystem
                 </a>
+                <a
+                  href='#vscode-plugins'
+                  className='text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.querySelector('#vscode-plugins');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  VS Code plugins
+                </a>
                 <Link
                   to='/docs/introduction'
                   className='text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors'
@@ -178,7 +217,7 @@ export const Header: React.FC<HeaderProps> = ({
               <Search size={20} />
             </button>
             <a
-              href='https://discord.gg/jxpt7Ye9YN'
+              href='https://discord.gg/tfEqmfQvv'
               target='_blank'
               rel='noopener noreferrer'
               className='hidden sm:inline-flex h-9 w-9 items-center justify-center rounded-md border border-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400'
@@ -195,7 +234,7 @@ export const Header: React.FC<HeaderProps> = ({
               </svg>
             </a>
             <a
-              href='https://github.com/GlobalTypeSystem'
+              href='https://github.com/orgs/GlobalTypeSystem/repositories'
               target='_blank'
               rel='noopener noreferrer'
               className='hidden sm:inline-flex h-9 w-9 items-center justify-center rounded-md border border-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400'
@@ -203,15 +242,7 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <Github size={20} />
             </a>
-            <a
-              href='https://www.linkedin.com/company/hypernetix/'
-              target='_blank'
-              rel='noopener noreferrer'
-              className='hidden sm:inline-flex h-9 w-9 items-center justify-center rounded-md border border-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400'
-              title='Follow on LinkedIn'
-            >
-              <Linkedin size={20} />
-            </a>
+
             <button
               onClick={toggleTheme}
               className='h-9 w-9 inline-flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400'
@@ -247,6 +278,20 @@ export const Header: React.FC<HeaderProps> = ({
               About
             </a>
             <a
+              href='#what-is-gts'
+              className='block px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-900 rounded-md transition-colors'
+              onClick={(e) => {
+                e.preventDefault();
+                const element = document.querySelector('#what-is-gts');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+                }
+                setIsMobileMenuOpen(false);
+              }}
+            >
+              What is GTS
+            </a>
+            <a
               href='#why-gts'
               className='block px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-900 rounded-md transition-colors'
               onClick={(e) => {
@@ -259,6 +304,20 @@ export const Header: React.FC<HeaderProps> = ({
               }}
             >
               Why GTS
+            </a>
+            <a
+              href='#use-cases'
+              className='block px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-900 rounded-md transition-colors'
+              onClick={(e) => {
+                e.preventDefault();
+                const element = document.querySelector('#use-cases');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+                }
+                setIsMobileMenuOpen(false);
+              }}
+            >
+              Use cases
             </a>
             <a
               href='#try-gts'
@@ -287,6 +346,20 @@ export const Header: React.FC<HeaderProps> = ({
               }}
             >
               Ecosystem
+            </a>
+            <a
+              href='#vscode-plugins'
+              className='block px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-900 rounded-md transition-colors'
+              onClick={(e) => {
+                e.preventDefault();
+                const element = document.querySelector('#vscode-plugins');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+                }
+                setIsMobileMenuOpen(false);
+              }}
+            >
+              VS Code plugins
             </a>
             <Link
               to='/docs/introduction'

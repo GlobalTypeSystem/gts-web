@@ -1,419 +1,246 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-interface FragmentationSVGProps {
-  isUnified?: boolean;
+interface Block {
+  id: string;
+  label: string;
+  gradientId: string;
+  x: number;
+  y: number;
 }
 
-export const FragmentationSVG: React.FC<FragmentationSVGProps> = ({
-  isUnified = false,
-}) => {
-  const [animationState, setAnimationState] = useState(isUnified);
+// 10 blocks placed on an oval around center (500, 200).
+// Horizontal radius is 50% wider than vertical for an oval shape.
+// Angles spaced evenly at 36 deg starting from -90 (top).
+const cx = 500;
+const cy = 200;
+const rx = 280; // horizontal radius (wider)
+const ry = 165; // vertical radius
+const angleOf = (i: number) => (-90 + i * 36) * (Math.PI / 180);
+const px = (i: number) => Math.round(cx + rx * Math.cos(angleOf(i)));
+const py = (i: number) => Math.round(cy + ry * Math.sin(angleOf(i)));
 
-  useEffect(() => {
-    setAnimationState(isUnified);
-  }, [isUnified]);
+// Color palette for block gradients - vibrant colors that work in both light and dark modes
+const blockGradients = [
+  { id: 'block-grad-0', from: '#3b82f6', to: '#1d4ed8' }, // Blue
+  { id: 'block-grad-1', from: '#8b5cf6', to: '#6d28d9' }, // Purple
+  { id: 'block-grad-2', from: '#ec4899', to: '#be185d' }, // Pink
+  { id: 'block-grad-3', from: '#f97316', to: '#c2410c' }, // Orange
+  { id: 'block-grad-4', from: '#eab308', to: '#a16207' }, // Yellow
+  { id: 'block-grad-5', from: '#22c55e', to: '#15803d' }, // Green
+  { id: 'block-grad-6', from: '#06b6d4', to: '#0e7490' }, // Cyan
+  { id: 'block-grad-7', from: '#6366f1', to: '#4338ca' }, // Indigo
+  { id: 'block-grad-8', from: '#a855f7', to: '#7e22ce' }, // Violet
+  { id: 'block-grad-9', from: '#14b8a6', to: '#0f766e' }, // Teal
+];
 
-  // Language blocks data
-  const blocks = [
-    { id: 'python', label: 'Python', color: '#3776ab', x: 120, y: 90 },
-    { id: 'go', label: 'Go', color: '#00add8', x: 430, y: 80 },
-    { id: 'rust', label: 'Rust', color: '#ce4e1f', x: 130, y: 310 },
-    { id: 'typescript', label: 'TypeScript', color: '#3178c6', x: 450, y: 320 },
-    { id: 'json', label: 'JSON Schema', color: '#000000', x: 300, y: 200 },
-  ];
-
-  // Fixed positions for connection line endpoints (these never change)
-  const getLineEndPosition = (index: number) => {
-    const positions = [
-      { x: 300, y: 80 }, // Python - Top
-      { x: 450, y: 130 }, // Go - Top-right
-      { x: 450, y: 270 }, // Rust - Bottom-right
-      { x: 150, y: 270 }, // TypeScript - Bottom-left
-      { x: 150, y: 130 }, // JSON Schema - Top-left
-    ];
-
-    return positions[index];
-  };
-
-  // Calculate positions for visual blocks (you can adjust these independently)
-  const getBlockPosition = (index: number) => {
-    const positions = [
-      { x: 240, y: 30 }, // Python - Top (shifted left)
-      { x: 400, y: 100 }, // Go - Top-right (shifted left)
-      { x: 400, y: 240 }, // Rust - Bottom-right (shifted left)
-      { x: 80, y: 240 }, // TypeScript - Bottom-left (shifted left)
-      { x: 80, y: 100 }, // JSON Schema - Top-left (shifted left)
-    ];
-
-    return positions[index];
-  };
-
-  // Collision/conflict markers for fragmented state
-  const conflicts = [
-    { x: 200, y: 150, size: 40 },
-    { x: 350, y: 250, size: 35 },
-    { x: 400, y: 150, size: 30 },
+export const FragmentationSVG: React.FC = () => {
+  const blocks: Block[] = [
+    {
+      id: 'api-data-types',
+      label: 'API Data Types',
+      gradientId: 'block-grad-0',
+      x: px(0),
+      y: py(0),
+    },
+    {
+      id: 'rpc-contracts',
+      label: 'RPC Contracts',
+      gradientId: 'block-grad-1',
+      x: px(1),
+      y: py(1),
+    },
+    {
+      id: 'event-schemas',
+      label: 'Event Schemas',
+      gradientId: 'block-grad-2',
+      x: px(2),
+      y: py(2),
+    },
+    {
+      id: 'custom-objects',
+      label: 'Custom Objects',
+      gradientId: 'block-grad-3',
+      x: px(3),
+      y: py(3),
+    },
+    {
+      id: 'db-schemas',
+      label: 'DB Schemas',
+      gradientId: 'block-grad-4',
+      x: px(4),
+      y: py(4),
+    },
+    {
+      id: 'workflows',
+      label: 'Workflows Definitions',
+      gradientId: 'block-grad-5',
+      x: px(5),
+      y: py(5),
+    },
+    {
+      id: 'ui-widget',
+      label: 'UI Widget',
+      gradientId: 'block-grad-6',
+      x: px(6),
+      y: py(6),
+    },
+    {
+      id: 'components',
+      label: 'Components Metadata',
+      gradientId: 'block-grad-7',
+      x: px(7),
+      y: py(7),
+    },
+    {
+      id: 'ml-ai',
+      label: 'ML/AI Artifacts',
+      gradientId: 'block-grad-8',
+      x: px(8),
+      y: py(8),
+    },
+    {
+      id: 'policy-settings',
+      label: 'Policy Settings',
+      gradientId: 'block-grad-9',
+      x: px(9),
+      y: py(9),
+    },
   ];
 
   return (
     <svg
-      viewBox='0 0 600 400'
+      viewBox='0 0 1000 400'
       className='w-full h-full'
       style={{ maxWidth: '100%', height: 'auto' }}
     >
       <defs>
-        {/* Gradient definitions */}
+        {/* Block gradients */}
+        {blockGradients.map((grad) => (
+          <linearGradient
+            key={grad.id}
+            id={grad.id}
+            x1='0%'
+            y1='0%'
+            x2='100%'
+            y2='100%'
+          >
+            <stop offset='0%' stopColor={grad.from} />
+            <stop offset='100%' stopColor={grad.to} />
+          </linearGradient>
+        ))}
+
+        {/* GTS center gradient */}
         <linearGradient id='gts-gradient' x1='0%' y1='0%' x2='100%' y2='100%'>
           <stop offset='0%' stopColor='#14b8a6' />
           <stop offset='100%' stopColor='#0d9488' />
         </linearGradient>
 
-        {/* Glow filters */}
-        <filter id='glow'>
-          <feGaussianBlur stdDeviation='4' result='coloredBlur' />
-          <feMerge>
-            <feMergeNode in='coloredBlur' />
-            <feMergeNode in='SourceGraphic' />
-          </feMerge>
-        </filter>
-
-        <filter id='conflict-glow'>
-          <feGaussianBlur stdDeviation='8' result='coloredBlur' />
-          <feMerge>
-            <feMergeNode in='coloredBlur' />
-            <feMergeNode in='SourceGraphic' />
-          </feMerge>
-        </filter>
-
-        {/* Radial gradient for GTS center */}
         <radialGradient id='gts-radial'>
-          <stop offset='0%' stopColor='#14b8a6' stopOpacity='0.8' />
-          <stop offset='50%' stopColor='#0d9488' stopOpacity='0.6' />
+          <stop offset='0%' stopColor='#14b8a6' stopOpacity='0.6' />
+          <stop offset='50%' stopColor='#0d9488' stopOpacity='0.35' />
           <stop offset='100%' stopColor='#0d9488' stopOpacity='0' />
         </radialGradient>
 
-        {/* Animated dash pattern for connections */}
-        <pattern
-          id='dash-pattern'
-          patternUnits='userSpaceOnUse'
-          width='10'
-          height='1'
+        {/* Glow filter for GTS hub */}
+        <filter id='glow'>
+          <feGaussianBlur stdDeviation='3' result='coloredBlur' />
+          <feMerge>
+            <feMergeNode in='coloredBlur' />
+            <feMergeNode in='SourceGraphic' />
+          </feMerge>
+        </filter>
+
+        {/* Subtle shadow for blocks */}
+        <filter id='block-shadow' x='-20%' y='-20%' width='140%' height='140%'>
+          <feDropShadow
+            dx='0'
+            dy='2'
+            stdDeviation='3'
+            floodColor='#000'
+            floodOpacity='0.15'
+          />
+        </filter>
+
+        {/* Arrow marker for connecting lines */}
+        <marker
+          id='arrow-marker'
+          markerWidth='8'
+          markerHeight='8'
+          refX='7'
+          refY='4'
+          orient='auto'
+          markerUnits='userSpaceOnUse'
         >
-          <line x1='0' y1='0' x2='5' y2='0' stroke='#14b8a6' strokeWidth='1' />
-        </pattern>
+          <path d='M0,1 L7,4 L0,7 Z' fill='#64748b' opacity='0.5' />
+        </marker>
       </defs>
 
-      {/* Background grid */}
-      <g opacity='0.1'>
-        {Array.from({ length: 12 }).map((_, i) => (
-          <line
-            key={`v-${i}`}
-            x1={i * 50}
-            y1='0'
-            x2={i * 50}
-            y2='400'
-            stroke='#94a3b8'
-            strokeWidth='1'
-          />
-        ))}
-        {Array.from({ length: 8 }).map((_, i) => (
-          <line
-            key={`h-${i}`}
-            x1='0'
-            y1={i * 50}
-            x2='600'
-            y2={i * 50}
-            stroke='#94a3b8'
-            strokeWidth='1'
-          />
-        ))}
-      </g>
-
-      {/* Conflict markers (only in fragmented state) */}
-      {!animationState &&
-        conflicts.map((conflict, i) => (
-          <g key={`conflict-${i}`}>
-            <circle
-              cx={conflict.x}
-              cy={conflict.y}
-              r={conflict.size}
-              fill='#ef4444'
-              opacity='0.15'
-              filter='url(#conflict-glow)'
-            >
-              <animate
-                attributeName='r'
-                values={`${conflict.size};${conflict.size + 10};${
-                  conflict.size
-                }`}
-                dur='2s'
-                repeatCount='indefinite'
-              />
-              <animate
-                attributeName='opacity'
-                values='0.15;0.25;0.15'
-                dur='2s'
-                repeatCount='indefinite'
-              />
-            </circle>
-            <text
-              x={conflict.x}
-              y={conflict.y + 5}
-              textAnchor='middle'
-              fontSize='24'
-              fill='#ef4444'
-              opacity='0.6'
-            >
-              ⚠
-            </text>
-          </g>
-        ))}
-
-      {/* GTS Central Hub (only in unified state) */}
-      {animationState && (
-        <g>
-          {/* Pulsing glow background */}
-          <circle
-            cx='300'
-            cy='200'
-            r='80'
-            fill='url(#gts-radial)'
-            opacity='0.4'
-          >
-            <animate
-              attributeName='r'
-              values='70;90;70'
-              dur='3s'
-              repeatCount='indefinite'
-            />
-            <animate
-              attributeName='opacity'
-              values='0.3;0.5;0.3'
-              dur='3s'
-              repeatCount='indefinite'
-            />
-          </circle>
-
-          {/* Main hub circle */}
-          <circle
-            cx='300'
-            cy='200'
-            r='50'
-            fill='url(#gts-gradient)'
-            filter='url(#glow)'
-            stroke='#0d9488'
-            strokeWidth='3'
-          />
-
-          {/* Hub logo */}
-          <foreignObject x='250' y='175' width='100' height='50'>
-            <div className='flex flex-col items-center justify-center w-full h-full'>
-              {/* GTS Logo - theme aware */}
-              <img
-                src='/gts_white.png'
-                alt='GTS'
-                className='block w-16 h-auto'
-              />
-            </div>
-          </foreignObject>
-        </g>
-      )}
-
-      {/* Connection lines from GTS hub to all blocks (only in unified state) */}
-      {animationState &&
-        blocks.map((block, index) => {
-          const pos = getLineEndPosition(index);
-          return (
-            <g key={`connection-${block.id}`}>
-              <line
-                x1='300'
-                y1='200'
-                x2={pos.x}
-                y2={pos.y}
-                stroke='#14b8a6'
-                strokeWidth='2'
-                opacity='0.6'
-                strokeDasharray='5,5'
-              >
-                <animate
-                  attributeName='stroke-dashoffset'
-                  from='0'
-                  to='10'
-                  dur='1s'
-                  repeatCount='indefinite'
-                />
-              </line>
-              {/* Data flow particles */}
-              <circle r='3' fill='#14b8a6'>
-                <animateMotion
-                  dur='2s'
-                  repeatCount='indefinite'
-                  path={`M 300 200 L ${pos.x} ${pos.y}`}
-                />
-              </circle>
-            </g>
-          );
-        })}
-
-      {/* Language blocks */}
+      {/* Connecting lines from GTS center to each block */}
       {blocks.map((block, index) => {
-        const pos = animationState ? getBlockPosition(index) : block;
-        const scale = animationState ? 0.8 : 1;
-
+        const grad = blockGradients[index];
         return (
-          <g
-            key={block.id}
-            style={{
-              transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)',
-              transform: `translate(${pos.x}px, ${pos.y}px) scale(${scale})`,
-              transformOrigin: 'center',
-            }}
-          >
-            {/* Block shadow */}
-            <rect
-              x='-50'
-              y='-20'
-              width='100'
-              height='40'
-              rx='8'
-              fill='black'
-              opacity='0.1'
-              transform='translate(2, 2)'
-            />
-
-            {/* Main block */}
-            <rect
-              x='-50'
-              y='-20'
-              width='100'
-              height='40'
-              rx='8'
-              fill={block.color}
-              stroke={animationState ? '#14b8a6' : '#1e293b'}
-              strokeWidth={animationState ? '2' : '1'}
-              filter={animationState ? 'url(#glow)' : undefined}
-            >
-              {!animationState && (
-                <>
-                  <animate
-                    attributeName='y'
-                    values='-20;-22;-20'
-                    dur={`${2 + index * 0.3}s`}
-                    repeatCount='indefinite'
-                  />
-                  <animate
-                    attributeName='x'
-                    values='-50;-52;-48;-50'
-                    dur={`${3 + index * 0.2}s`}
-                    repeatCount='indefinite'
-                  />
-                </>
-              )}
-            </rect>
-
-            {/* Label */}
-            <text
-              textAnchor='middle'
-              dominantBaseline='central'
-              fontSize='11'
-              fontWeight='600'
-              fill='white'
-            >
-              {block.label}
-            </text>
-
-            {/* Status indicator */}
-            <circle
-              cx='42'
-              cy='-12'
-              r='4'
-              fill={animationState ? '#10b981' : '#ef4444'}
-            >
-              {!animationState && (
-                <animate
-                  attributeName='opacity'
-                  values='1;0.4;1'
-                  dur='1s'
-                  repeatCount='indefinite'
-                />
-              )}
-            </circle>
-          </g>
+          <line
+            key={`line-${block.id}`}
+            x1={cx}
+            y1={cy}
+            x2={block.x}
+            y2={block.y}
+            stroke={grad.from}
+            strokeWidth='1.5'
+            opacity='0.4'
+            strokeDasharray='6,4'
+            markerEnd='url(#arrow-marker)'
+          />
         );
       })}
 
-      {/* Arrows showing incompatibility (only in fragmented state) */}
-      {!animationState && (
-        <g opacity='0.5'>
-          <defs>
-            <marker
-              id='arrowhead-red'
-              markerWidth='10'
-              markerHeight='10'
-              refX='9'
-              refY='3'
-              orient='auto'
-            >
-              <polygon points='0 0, 10 3, 0 6' fill='#ef4444' />
-            </marker>
-          </defs>
-          <path
-            d='M 150 100 Q 200 120 250 180'
-            stroke='#ef4444'
-            strokeWidth='2'
-            fill='none'
-            markerEnd='url(#arrowhead-red)'
-            strokeDasharray='4,4'
-          >
-            <animate
-              attributeName='stroke-dashoffset'
-              from='0'
-              to='8'
-              dur='0.5s'
-              repeatCount='indefinite'
-            />
-          </path>
-          <path
-            d='M 450 80 Q 380 140 320 180'
-            stroke='#ef4444'
-            strokeWidth='2'
-            fill='none'
-            markerEnd='url(#arrowhead-red)'
-            strokeDasharray='4,4'
-          >
-            <animate
-              attributeName='stroke-dashoffset'
-              from='0'
-              to='8'
-              dur='0.5s'
-              repeatCount='indefinite'
-            />
-          </path>
-        </g>
-      )}
-
-      {/* Status label */}
-      <g transform='translate(300, 370)'>
-        <rect
-          x='-120'
-          y='-15'
-          width='240'
-          height='30'
-          rx='15'
-          fill={animationState ? '#065f46' : '#7f1d1d'}
-          opacity='0.9'
-        />
-        <text
-          textAnchor='middle'
-          dominantBaseline='central'
-          fontSize='12'
-          fontWeight='600'
-          fill='white'
+      {/* System blocks */}
+      {blocks.map((block) => (
+        <g
+          key={block.id}
+          style={{
+            transform: `translate(${block.x}px, ${block.y}px)`,
+            transformOrigin: 'center',
+          }}
         >
-          {animationState
-            ? '✓ Unified & Interoperable'
-            : '⚠ Fragmented & Incompatible'}
-        </text>
+          <rect
+            x='-72'
+            y='-18'
+            width='144'
+            height='36'
+            rx='8'
+            fill={`url(#${block.gradientId})`}
+            filter='url(#block-shadow)'
+          />
+          <text
+            textAnchor='middle'
+            dominantBaseline='central'
+            fontSize='10'
+            fontWeight='600'
+            fill='white'
+          >
+            {block.label}
+          </text>
+        </g>
+      ))}
+
+      {/* GTS hub */}
+      <g>
+        <circle cx={cx} cy={cy} r='72' fill='url(#gts-radial)' opacity='0.35' />
+        <circle
+          cx={cx}
+          cy={cy}
+          r='48'
+          fill='url(#gts-gradient)'
+          filter='url(#glow)'
+          stroke='#0d9488'
+          strokeWidth='2'
+        />
+        <foreignObject x={cx - 42} y={cy - 22} width='84' height='44'>
+          <div className='flex h-full w-full items-center justify-center'>
+            <img src='/gts_white.png' alt='GTS' className='block h-auto w-14' />
+          </div>
+        </foreignObject>
       </g>
     </svg>
   );
