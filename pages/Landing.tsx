@@ -44,27 +44,32 @@ interface EcosystemProject {
 
 const VSCODE_SCREENSHOTS = [
   {
-    src: '/images/vscode/gts-kit-01.png',
+    src: '/images/gts-kit/screens/full/screen-1.png',
+    thumbnail: '/images/gts-kit/screens/thumbs/screen-1.jpg',
     alt: 'GTS Kit extension overview in Visual Studio Code',
     label: 'Extension overview',
   },
   {
-    src: '/images/vscode/gts-kit-02.png',
+    src: '/images/gts-kit/screens/full/screen-2.png',
+    thumbnail: '/images/gts-kit/screens/thumbs/screen-2.jpg',
     alt: 'GTS type schema validation in Visual Studio Code',
     label: 'Schema validation',
   },
   {
-    src: '/images/vscode/gts-kit-03.png',
+    src: '/images/gts-kit/screens/full/screen-3.png',
+    thumbnail: '/images/gts-kit/screens/thumbs/screen-3.jpg',
     alt: 'GTS identifier assistance in Visual Studio Code',
     label: 'Identifier assistance',
   },
   {
-    src: '/images/vscode/gts-kit-04.png',
+    src: '/images/gts-kit/screens/full/screen-4.png',
+    thumbnail: '/images/gts-kit/screens/thumbs/screen-4.jpg',
     alt: 'GTS schema explorer in Visual Studio Code',
     label: 'Schema explorer',
   },
   {
-    src: '/images/vscode/gts-kit-05.png',
+    src: '/images/gts-kit/screens/full/screen-5.png',
+    thumbnail: '/images/gts-kit/screens/thumbs/screen-5.jpg',
     alt: 'GTS diagnostics in Visual Studio Code',
     label: 'Editor diagnostics',
   },
@@ -138,6 +143,33 @@ export const Landing: React.FC = () => {
   useEffect(() => {
     setIsVisible(true);
   }, []);
+
+  useEffect(() => {
+    if (!isVsCodeGalleryOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsVsCodeGalleryOpen(false);
+      } else if (event.key === 'ArrowLeft') {
+        setActiveVsCodeScreenshot((current) =>
+          current === 0 ? VSCODE_SCREENSHOTS.length - 1 : current - 1
+        );
+      } else if (event.key === 'ArrowRight') {
+        setActiveVsCodeScreenshot((current) =>
+          current === VSCODE_SCREENSHOTS.length - 1 ? 0 : current + 1
+        );
+      }
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isVsCodeGalleryOpen]);
 
   return (
     <div className='flex flex-col min-h-screen bg-white dark:bg-slate-950 overflow-hidden'>
@@ -874,7 +906,7 @@ export const Landing: React.FC = () => {
               <p className='mt-1 text-sm text-slate-600 dark:text-slate-400'>
                 Select a screenshot to explore the extension in detail.
               </p>
-              <div className='mt-4 grid grid-cols-5 gap-2'>
+              <div className='mt-4 grid grid-cols-2 gap-2 sm:grid-cols-5'>
                 {VSCODE_SCREENSHOTS.map((screenshot, index) => (
                   <button
                     key={screenshot.src}
@@ -889,9 +921,11 @@ export const Landing: React.FC = () => {
                       {screenshot.label}
                     </span>
                     <img
-                      src={screenshot.src}
+                      src={screenshot.thumbnail}
                       alt=''
-                      className='absolute inset-0 h-full w-full object-cover'
+                      loading='lazy'
+                      decoding='async'
+                      className='absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105'
                       onError={(event) => {
                         event.currentTarget.style.display = 'none';
                       }}
@@ -934,13 +968,14 @@ export const Landing: React.FC = () => {
               </div>
               <div className='relative flex min-h-0 flex-1 items-center justify-center bg-slate-100 p-4 dark:bg-slate-950'>
                 <div className='flex aspect-video w-full max-h-full items-center justify-center px-6 text-center text-slate-500 dark:text-slate-400'>
-                  Add {VSCODE_SCREENSHOTS[activeVsCodeScreenshot].src} to view
-                  this screenshot.
+                  Full-resolution screenshot unavailable.
                 </div>
                 <img
                   key={VSCODE_SCREENSHOTS[activeVsCodeScreenshot].src}
                   src={VSCODE_SCREENSHOTS[activeVsCodeScreenshot].src}
                   alt={VSCODE_SCREENSHOTS[activeVsCodeScreenshot].alt}
+                  loading='eager'
+                  decoding='async'
                   className='absolute inset-0 h-full w-full object-contain'
                   onError={(event) => {
                     event.currentTarget.style.display = 'none';
