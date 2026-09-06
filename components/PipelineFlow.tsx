@@ -43,7 +43,7 @@ export const PipelineFlow: React.FC = () => {
       id: 2,
       icon: <CheckCircle size={24} />,
       title: 'Validate',
-      description: 'Run gts-cli validator',
+      description: 'Run a GTS validator',
       detail:
         'Ensure schema correctness and compatibility with existing types using built-in validation rules',
       color: 'from-purple-500 to-purple-600',
@@ -51,19 +51,19 @@ export const PipelineFlow: React.FC = () => {
     {
       id: 3,
       icon: <Code2 size={24} />,
-      title: 'Generate bindings',
-      description: 'Multi-language output',
+      title: 'Generate artifacts',
+      description: 'Schema and API output',
       detail:
-        'Automatically generate type-safe bindings for Python, Go, Rust, TypeScript, and more',
+        'Generate canonical JSON Schema and OpenAPI artifacts from supported source formats such as TypeSpec',
       color: 'from-orange-500 to-orange-600',
     },
     {
       id: 4,
       icon: <Rocket size={24} />,
       title: 'Use in apps',
-      description: 'Production ready',
+      description: 'Validate and integrate',
       detail:
-        'Import generated types into your applications with full IDE support and type safety',
+        'Use the canonical schemas and identifiers in applications with validation and registry resolution',
       color: 'from-emerald-500 to-emerald-600',
     },
   ];
@@ -185,11 +185,10 @@ export const PipelineFlow: React.FC = () => {
           </div>
           <pre className='text-sm text-slate-300 font-mono overflow-x-auto'>
             {(clickedStage || activeStage) === 1 && (
-              <code>{`# Define GTS Schema
-gts.mycompany.users.api.user.v1~
-
+              <code>{`# user.v1~.schema.json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gts://gts.mycompany.users.api.user.v1~",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
     "id": { "type": "string" },
@@ -200,36 +199,33 @@ gts.mycompany.users.api.user.v1~
 }`}</code>
             )}
             {(clickedStage || activeStage) === 2 && (
-              <code>{`$ gts validate schema.json
+              <code>{`$ gts validate user.v1~.schema.json
 
-✓ Schema ID valid: gts.mycompany.users.api.user.v1~
-✓ JSON Schema validation passed
-✓ No compatibility issues found
-✓ Ready for code generation`}</code>
+✓ $id valid: gts://gts.mycompany.users.api.user.v1~
+✓ JSON Schema draft-07 validation passed
+✓ No compatibility issues with base types
+✓ Ready for registry publication`}</code>
             )}
             {(clickedStage || activeStage) === 3 && (
-              <code>{`$ gts generate --lang=python,typescript,go
+              <code>{`TypeSpec source
+      │
+      ├── canonical JSON Schema
+      └── OpenAPI artifact
 
-Generated:
-  ✓ python/mycompany_users_api_user_v1.py
-  ✓ typescript/mycompany_users_api_user_v1.ts
-  ✓ go/mycompany_users_api_user_v1.go
-
-All bindings generated successfully!`}</code>
+GTS identifiers and x-gts-* extensions preserved.
+Artifacts are ready for registry publication.`}</code>
             )}
             {(clickedStage || activeStage) === 4 && (
-              <code>{`// TypeScript: Full IDE support & type safety
-import { User } from './mycompany_users_api_user_v1';
-
-const user: User = {
+              <code>{`// Application integration
+const user = {
   id: "usr_123",
   email: "dev@example.com",
   name: "Alex Smith"
 };
 
-// ✓ Type-checked at compile time
-// ✓ Autocomplete in IDE
-// ✓ Consistent across all services`}</code>
+// Resolve the GTS Type Identifier through the registry.
+// Validate the instance against the resolved Type Schema.
+// Apply application-specific processing separately.`}</code>
             )}
           </pre>
         </div>

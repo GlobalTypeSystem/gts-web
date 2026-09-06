@@ -81,7 +81,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <a
-                  href='https://discord.gg/jxpt7Ye9YN'
+                  href='https://discord.gg/tfEqmfQvv'
                   target='_blank'
                   rel='noreferrer'
                   className='hover:text-brand-400 transition-colors'

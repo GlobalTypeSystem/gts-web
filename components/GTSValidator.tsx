@@ -1,11 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Check, X, AlertCircle, Copy, RotateCcw } from 'lucide-react';
+import { validateGtsID, parseGtsID } from '@globaltypesystem/gts-ts';
+
+interface SegmentInfo {
+  segment: string;
+  vendor: string;
+  pkg: string;
+  namespace: string;
+  typeName: string;
+  version: string;
+  isType: boolean;
+  isUuidTail: boolean;
+}
 
 interface ValidationResult {
   isValid: boolean;
   message: string;
-  segments?: string[];
-  type?: 'schema' | 'instance';
+  segmentInfos?: SegmentInfo[];
+  kind?: 'base-type' | 'derived-type' | 'instance' | 'wildcard';
+  typeRef?: string;
 }
 
 export const GTSValidator: React.FC = () => {
@@ -14,84 +27,108 @@ export const GTSValidator: React.FC = () => {
   const [copied, setCopied] = useState(false);
 
   const examples = [
-    { label: 'Schema', value: 'gts.x.core.events.type.v1~' },
+    { label: 'Type', value: 'gts.x.core.events.type.v1~' },
     {
-      label: 'Instance',
+      label: 'Derived Type',
+      value: 'gts.x.core.events.type.v1~ven.app._.custom_event.v1~',
+    },
+    {
+      label: 'Well-known Instance',
       value: 'gts.x.core.events.topic.v1~x.commerce._.orders.v1.0',
     },
     {
-      label: 'Chain Schema',
-      value: 'gts.x.core.events.topic.v1~x.commerce._.orders.v1.0~',
-    },
-    {
-      label: 'Chain Instance',
-      value:
-        'gts.x.core.acm.user.v1~ven.app._.admin.v1.2~org.system._.permissions.v2.1',
+      label: 'Anonymous Instance',
+      value: 'gts.x.core.events.type.v1~123e4567-e89b-12d3-a456-426614174000',
     },
   ];
 
-  // GTS Validation Regexes from the spec
-  const SINGLE_SEGMENT_REGEX =
-    /^gts\.([a-z_][a-z0-9_]*)\.([a-z_][a-z0-9_]*)\.([a-z_][a-z0-9_]*)\.([a-z_][a-z0-9_]*)\.v(0|[1-9]\d*)(?:\.(0|[1-9]\d*))?~?$/;
-  const CHAINED_REGEX =
-    /^\s*gts\.[a-z_][a-z0-9_]*\.[a-z_][a-z0-9_]*\.[a-z_][a-z0-9_]*\.[a-z_][a-z0-9_]*\.v(0|[1-9]\d*)(?:\.(0|[1-9]\d*))?(?:~[a-z_][a-z0-9_]*\.[a-z_][a-z0-9_]*\.[a-z_][a-z0-9_]*\.[a-z_][a-z0-9_]*\.v(0|[1-9]\d*)(?:\.(0|[1-9]\d*))?)*~?\s*$/;
-
+  // Validation is delegated to the official @globaltypesystem/gts-ts library
+  // (OP#1 - ID Validation, OP#3 - ID Parsing) so behaviour always tracks the spec.
   const validateGTS = (value: string): ValidationResult => {
     if (!value.trim()) {
       return { isValid: false, message: 'Please enter a GTS identifier' };
     }
 
     const trimmed = value.trim();
+    const validation = validateGtsID(trimmed);
 
-    // Check if it's a chained identifier
-    const isChained =
-      trimmed.includes('~') && trimmed.split('~').filter((s) => s).length > 1;
+    if (!validation.ok) {
+      return {
+        isValid: false,
+        message: validation.error || 'Invalid GTS identifier',
+      };
+    }
 
-    if (isChained) {
-      if (CHAINED_REGEX.test(trimmed)) {
-        const segments = trimmed.split('~').filter((s) => s);
-        const endsWithTilde = trimmed.endsWith('~');
+    if (validation.is_wildcard) {
+      return {
+        isValid: true,
+        message: 'Valid GTS wildcard pattern',
+        segmentInfos: [
+          {
+            segment: trimmed,
+            vendor: '',
+            pkg: '',
+            namespace: '',
+            typeName: '',
+            version: '',
+            isType: false,
+            isUuidTail: false,
+          },
+        ],
+        kind: 'wildcard',
+      };
+    }
 
-        return {
-          isValid: true,
-          message: `Valid chained GTS identifier with ${segments.length} segment(s)`,
-          segments,
-          type: endsWithTilde ? 'schema' : 'instance',
-        };
+    const parsed = parseGtsID(trimmed);
+    if (!parsed.ok) {
+      return {
+        isValid: false,
+        message: parsed.error || 'Failed to parse GTS identifier',
+      };
+    }
+
+    const segmentInfos: SegmentInfo[] = parsed.segments.map((s) => ({
+      segment: s.segment,
+      vendor: s.vendor,
+      pkg: s.package,
+      namespace: s.namespace,
+      typeName: s.type,
+      version:
+        s.verMinor != null ? `v${s.verMajor}.${s.verMinor}` : `v${s.verMajor}`,
+      isType: s.isType,
+      isUuidTail: s.isUuidTail,
+    }));
+
+    const isType = parsed.is_type_schema ?? trimmed.endsWith('~');
+
+    let kind: ValidationResult['kind'];
+    let message: string;
+    let typeRef: string | undefined;
+
+    if (isType) {
+      if (segmentInfos.length === 1) {
+        kind = 'base-type';
+        message = 'Valid GTS Base Type identifier';
       } else {
-        return {
-          isValid: false,
-          message:
-            'Invalid chained identifier. All segments except the last must be type IDs (ending with ~)',
-        };
+        kind = 'derived-type';
+        const baseParts = segmentInfos
+          .slice(0, -1)
+          .map((s) => s.segment)
+          .join('');
+        typeRef = baseParts;
+        message = 'Valid GTS Derived Type identifier';
       }
     } else {
-      if (SINGLE_SEGMENT_REGEX.test(trimmed)) {
-        const endsWithTilde = trimmed.endsWith('~');
-
-        // GTS v0.7: Reject single-segment instances
-        if (!endsWithTilde) {
-          return {
-            isValid: false,
-            message:
-              'Single-segment instance identifiers are prohibited in GTS v0.7. Well-known instances MUST include a left-hand type segment in a chain (e.g., gts.x.core.events.topic.v1~x.commerce._.orders.v1.0)',
-          };
-        }
-
-        return {
-          isValid: true,
-          message: `Valid GTS ${endsWithTilde ? 'schema (type)' : 'instance'} identifier`,
-          segments: [trimmed.replace(/~$/, '')],
-          type: endsWithTilde ? 'schema' : 'instance',
-        };
-      } else {
-        return {
-          isValid: false,
-          message:
-            'Invalid format. Expected: gts.<vendor>.<package>.<namespace>.<type>.v<MAJOR>[.<MINOR>][~]',
-        };
-      }
+      kind = 'instance';
+      const typeParts = segmentInfos
+        .filter((s) => s.isType)
+        .map((s) => s.segment)
+        .join('');
+      typeRef = typeParts ? `gts.${typeParts}` : undefined;
+      message = 'Valid GTS Instance identifier';
     }
+
+    return { isValid: true, message, segmentInfos, kind, typeRef };
   };
 
   useEffect(() => {
@@ -113,7 +150,7 @@ export const GTSValidator: React.FC = () => {
   };
 
   return (
-    <div className='w-full max-w-4xl mx-auto'>
+    <div className='w-full max-w-6xl mx-auto'>
       <div className='bg-slate-900 rounded-xl overflow-hidden shadow-2xl border border-slate-800'>
         {/* Editor Header */}
         <div className='flex items-center justify-between px-4 py-3 bg-slate-800 border-b border-slate-700'>
@@ -169,7 +206,7 @@ export const GTSValidator: React.FC = () => {
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className='w-full h-32 bg-slate-900 text-slate-100 font-mono text-sm pl-16 pr-4 py-4 resize-none focus:outline-none focus:ring-2 focus:ring-brand-500/50'
+            className='w-full h-12 bg-slate-900 text-slate-100 font-mono text-sm pl-16 pr-4 py-4 resize-none focus:outline-none focus:ring-2 focus:ring-brand-500/50'
             placeholder='Enter a GTS identifier...'
             spellCheck={false}
           />
@@ -194,47 +231,149 @@ export const GTSValidator: React.FC = () => {
                 <X size={18} className='text-red-400 mt-0.5 flex-shrink-0' />
               )}
               <div className='flex-1'>
+                {/* Summary line */}
                 <p
                   className={`text-sm font-medium ${result.isValid ? 'text-emerald-300' : 'text-red-300'}`}
                 >
-                  {result.message}
+                  {!result.isValid && result.message}
+                  {result.isValid &&
+                    result.kind === 'wildcard' &&
+                    result.message}
+                  {result.isValid && result.kind === 'base-type' && (
+                    <>
+                      Valid GTS{' '}
+                      <span className='text-purple-300 font-semibold'>
+                        Base Type
+                      </span>{' '}
+                      identifier
+                    </>
+                  )}
+                  {result.isValid && result.kind === 'derived-type' && (
+                    <>
+                      Valid GTS{' '}
+                      <span className='text-purple-300 font-semibold'>
+                        Derived Type
+                      </span>{' '}
+                      identifier, derived from{' '}
+                      <code className='px-1.5 py-0.5 bg-slate-800 text-brand-400 rounded font-mono text-xs'>
+                        gts.{result.typeRef}
+                      </code>
+                    </>
+                  )}
+                  {result.isValid && result.kind === 'instance' && (
+                    <>
+                      Valid GTS{' '}
+                      <span className='text-blue-300 font-semibold'>
+                        Instance
+                      </span>{' '}
+                      identifier
+                      {result.typeRef && (
+                        <>
+                          . The instance schema is{' '}
+                          <code className='px-1.5 py-0.5 bg-slate-800 text-brand-400 rounded font-mono text-xs'>
+                            {result.typeRef}
+                          </code>
+                        </>
+                      )}
+                    </>
+                  )}
                 </p>
-                {result.isValid && result.segments && (
-                  <div className='mt-3 space-y-2'>
-                    <div className='text-xs text-slate-400'>
-                      Parsed Segments:
+
+                {/* Segment details */}
+                {result.isValid &&
+                  result.segmentInfos &&
+                  result.kind !== 'wildcard' && (
+                    <div className='mt-3 space-y-3'>
+                      {result.segmentInfos.map((seg, idx) => {
+                        const total = result.segmentInfos!.length;
+                        const isFirst = idx === 0;
+                        const isLast = idx === total - 1;
+                        let segLabel: string;
+                        if (total === 1) {
+                          segLabel = seg.isType
+                            ? 'Base type'
+                            : seg.isUuidTail
+                              ? 'Instance ID'
+                              : 'Instance';
+                        } else if (isFirst) {
+                          segLabel = 'Base type';
+                        } else if (isLast) {
+                          segLabel = seg.isType
+                            ? 'Final type'
+                            : seg.isUuidTail
+                              ? 'Instance ID'
+                              : 'Final instance';
+                        } else {
+                          segLabel = 'Derived type';
+                        }
+                        return (
+                          <div
+                            key={idx}
+                            className='rounded-lg bg-slate-800/60 border border-slate-700/50 p-3'
+                          >
+                            <div className='flex items-center gap-2 mb-2'>
+                              <span className='text-xs font-semibold text-slate-400'>
+                                {segLabel}
+                              </span>
+                              <code className='px-1.5 py-0.5 bg-slate-900 text-brand-400 rounded font-mono text-xs'>
+                                {seg.segment}
+                              </code>
+                              {seg.isType && (
+                                <span className='px-1.5 py-0.5 rounded text-[10px] font-medium bg-purple-900/40 text-purple-300'>
+                                  Type
+                                </span>
+                              )}
+                              {seg.isUuidTail && (
+                                <span className='px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-900/40 text-amber-300'>
+                                  UUID
+                                </span>
+                              )}
+                              {!seg.isType && !seg.isUuidTail && (
+                                <span className='px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-900/40 text-blue-300'>
+                                  Instance
+                                </span>
+                              )}
+                            </div>
+                            {!seg.isUuidTail && seg.vendor && (
+                              <div className='grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-1 text-xs'>
+                                <div>
+                                  <span className='text-slate-500'>vendor</span>{' '}
+                                  <span className='text-slate-300 font-mono'>
+                                    {seg.vendor}
+                                  </span>
+                                </div>
+                                <div>
+                                  <span className='text-slate-500'>
+                                    package
+                                  </span>{' '}
+                                  <span className='text-slate-300 font-mono'>
+                                    {seg.pkg}
+                                  </span>
+                                </div>
+                                <div>
+                                  <span className='text-slate-500'>
+                                    namespace
+                                  </span>{' '}
+                                  <span className='text-slate-300 font-mono'>
+                                    {seg.namespace}
+                                  </span>
+                                </div>
+                                <div>
+                                  <span className='text-slate-500'>type</span>{' '}
+                                  <span className='text-slate-300 font-mono'>
+                                    {seg.typeName}
+                                  </span>
+                                  <span className='text-slate-500 ml-1'>
+                                    {seg.version}
+                                  </span>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
-                    {result.segments.map((segment, idx) => (
-                      <div
-                        key={idx}
-                        className='flex items-center gap-2 text-xs'
-                      >
-                        <span className='text-slate-500'>
-                          Segment {idx + 1}:
-                        </span>
-                        <code className='px-2 py-1 bg-slate-800 text-brand-400 rounded font-mono'>
-                          {segment}
-                        </code>
-                      </div>
-                    ))}
-                    {result.type && (
-                      <div className='flex items-center gap-2 text-xs mt-2'>
-                        <span className='text-slate-500'>Type:</span>
-                        <span
-                          className={`px-2 py-1 rounded font-medium ${
-                            result.type === 'schema'
-                              ? 'bg-purple-900/40 text-purple-300'
-                              : 'bg-blue-900/40 text-blue-300'
-                          }`}
-                        >
-                          {result.type === 'schema'
-                            ? 'Schema (Type)'
-                            : 'Instance (Object)'}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                )}
+                  )}
               </div>
             </div>
           </div>
@@ -244,7 +383,11 @@ export const GTSValidator: React.FC = () => {
         <div className='px-4 py-2 bg-slate-800/30 border-t border-slate-700 text-xs text-slate-500 space-y-2'>
           <div className='flex items-center gap-2'>
             <AlertCircle size={14} />
-            <span>Real-time validation using official GTS regex patterns</span>
+            <span>
+              Real-time validation powered by the official{' '}
+              <code className='text-slate-400'>@globaltypesystem/gts-ts</code>{' '}
+              library
+            </span>
           </div>
         </div>
       </div>
