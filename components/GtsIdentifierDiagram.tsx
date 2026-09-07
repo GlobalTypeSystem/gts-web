@@ -414,7 +414,12 @@ export const GtsIdentifierDiagram: React.FC = () => {
           {`" },
     { "properties": {
         "payload": {
-          "required": ["orderId"]
+          "type": "object",
+          "properties": {
+            "orderId": { "type": "string" },
+            "totalAmount": { "type": "number" }
+          },
+          "required": ["orderId", "totalAmount"]
     } } }
   ],
   "x-gts-traits": {
@@ -437,12 +442,21 @@ export const GtsIdentifierDiagram: React.FC = () => {
           {`",
   "x-gts-abstract": true,
   "title": "Event Envelope",
+  "type": "object",
+  "x-gts-traits-schema": {
+    "properties": {
+      "retention": { "type": "string" }
+    }
+  },
   "required": [
     "id", "type",
     "tenantId", "occurredAt"
   ],
   "properties": {
+    "id": { "type": "string" },
     "type": { "x-gts-ref": "/$id" },
+    "tenantId": { "type": "string" },
+    "occurredAt": { "type": "string" },
     "payload": { "type": "object" }
   }
 }`}
