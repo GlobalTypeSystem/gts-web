@@ -336,10 +336,10 @@ export const Landing: React.FC = () => {
           className='container space-y-6 py-8 md:py-12 lg:py-24 mx-auto px-4 border-t border-slate-100 dark:border-slate-900'
         >
           <h2 className='text-3xl font-bold text-center mb-12 text-slate-900 dark:text-white animate-slideUp'>
-            Why teams choose GTS
+            Why teams use GTS identifiers
           </h2>
           <div className='mx-auto grid justify-center gap-6 sm:grid-cols-2 max-w-6xl lg:grid-cols-3'>
-            {/* 1. Human-readable identifiers */}
+            {/* 1. Human-readable */}
             <div className='group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-brand-500/50 animate-scaleIn stagger-1'>
               <div className='absolute inset-0 bg-gradient-to-br from-brand-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
               <div className='relative z-10'>
@@ -347,7 +347,7 @@ export const Landing: React.FC = () => {
                   <BookOpen size={20} />
                 </div>
                 <h3 className='font-bold text-slate-900 dark:text-white mb-2'>
-                  Human-readable identifiers
+                  Human-readable
                 </h3>
                 <p className='text-sm text-slate-600 dark:text-slate-400'>
                   Every identifier encodes vendor, package, namespace, type, and
@@ -357,37 +357,15 @@ export const Landing: React.FC = () => {
               </div>
             </div>
 
-            {/* 2. JSON Schema / YAML / TypeSpec compatible */}
-            <div className='group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-sky-500/50 animate-scaleIn stagger-2'>
-              <div className='absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
-              <div className='relative z-10'>
-                <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-100 mb-4 group-hover:scale-110 transition-transform duration-300'>
-                  <ShieldCheck size={20} />
-                </div>
-                <h3 className='font-bold text-slate-900 dark:text-white mb-2'>
-                  JSON Schema / YAML / TypeSpec compatible
-                </h3>
-                <p className='text-sm text-slate-600 dark:text-slate-400'>
-                  GTS Type Schemas are standard JSON Schema documents with{' '}
-                  <code className='text-blue-500 dark:text-blue-400'>
-                    x-gts-*
-                  </code>{' '}
-                  extensions. Standard JSON Schema tooling can process the schema
-                  body, while GTS-aware tooling enforces the additional registry
-                  rules. YAML and TypeSpec sources may compile to the canonical form.
-                </p>
-              </div>
-            </div>
-
-            {/* 3. Versioned identifiers */}
-            <div className='group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-purple-500/50 animate-scaleIn stagger-3'>
+            {/* 2. Versioned */}
+            <div className='group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-purple-500/50 animate-scaleIn stagger-2'>
               <div className='absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
               <div className='relative z-10'>
                 <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-100 mb-4 group-hover:scale-110 transition-transform duration-300'>
                   <GitBranch size={20} />
                 </div>
                 <h3 className='font-bold text-slate-900 dark:text-white mb-2'>
-                  Versioned identifiers
+                  Versioned
                 </h3>
                 <p className='text-sm text-slate-600 dark:text-slate-400'>
                   Major and optional minor versions are part of the identifier.
@@ -398,15 +376,15 @@ export const Landing: React.FC = () => {
               </div>
             </div>
 
-            {/* 4. Cross-system unique identifiers */}
-            <div className='group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-emerald-500/50 animate-scaleIn stagger-4'>
+            {/* 3. Cross-system unique */}
+            <div className='group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-emerald-500/50 animate-scaleIn stagger-3'>
               <div className='absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
               <div className='relative z-10'>
                 <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-900 text-emerald-600 dark:text-emerald-100 mb-4 group-hover:scale-110 transition-transform duration-300'>
                   <Puzzle size={20} />
                 </div>
                 <h3 className='font-bold text-slate-900 dark:text-white mb-2'>
-                  Cross-system unique identifiers
+                  Cross-system unique
                 </h3>
                 <p className='text-sm text-slate-600 dark:text-slate-400'>
                   The vendor-qualified structure prevents naming collisions
@@ -416,33 +394,15 @@ export const Landing: React.FC = () => {
               </div>
             </div>
 
-            {/* 5. API data types extension */}
-            <div className='group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-orange-500/50 animate-scaleIn stagger-5'>
-              <div className='absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
-              <div className='relative z-10'>
-                <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-900 text-orange-600 dark:text-orange-100 mb-4 group-hover:scale-110 transition-transform duration-300'>
-                  <Database size={20} />
-                </div>
-                <h3 className='font-bold text-slate-900 dark:text-white mb-2'>
-                  API data types extension
-                </h3>
-                <p className='text-sm text-slate-600 dark:text-slate-400'>
-                  Derive compatible types from platform base schemas. Store base
-                  fields in indexed columns and vendor extensions in JSON/JSONB
-                  — no DDL migrations, full API compatibility preserved.
-                </p>
-              </div>
-            </div>
-
-            {/* 6. Granular access control */}
-            <div className='group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-pink-500/50 animate-scaleIn stagger-6'>
+            {/* 4. Enables granular access control */}
+            <div className='group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-pink-500/50 animate-scaleIn stagger-4'>
               <div className='absolute inset-0 bg-gradient-to-br from-pink-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
               <div className='relative z-10'>
                 <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-pink-100 dark:bg-pink-900 text-pink-600 dark:text-pink-100 mb-4 group-hover:scale-110 transition-transform duration-300'>
                   <Lock size={20} />
                 </div>
                 <h3 className='font-bold text-slate-900 dark:text-white mb-2'>
-                  Granular access control
+                  Enables granular access control
                 </h3>
                 <p className='text-sm text-slate-600 dark:text-slate-400'>
                   Build RBAC/ABAC policies with wildcard patterns like{' '}
@@ -451,6 +411,49 @@ export const Landing: React.FC = () => {
                   </code>
                   . Authorize entire type families or filter by attribute
                   predicates — no explicit allowlists to maintain.
+                </p>
+              </div>
+            </div>
+
+            {/* 5. Enables API data types inheritance */}
+            <div className='group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-orange-500/50 animate-scaleIn stagger-5'>
+              <div className='absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
+              <div className='relative z-10'>
+                <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-900 text-orange-600 dark:text-orange-100 mb-4 group-hover:scale-110 transition-transform duration-300'>
+                  <Database size={20} />
+                </div>
+                <h3 className='font-bold text-slate-900 dark:text-white mb-2'>
+                  Enables API data types Inheritance
+                </h3>
+                <p className='text-sm text-slate-600 dark:text-slate-400'>
+                  Derive vendor-specific types from platform base types while
+                  preserving API compatibility, e.g. by defining some <code class="text-blue-500 dark:text-blue-400">data</code> or <code class="text-blue-500 dark:text-blue-400">payload</code> property schema. Store common fields in indexed
+                  columns, extensions in JSON/JSONB — no DDL migrations needed,
+                  full type safety maintained across the inheritance chain.
+                </p>
+              </div>
+            </div>
+
+            {/* 6. Provides types metadata convention */}
+            <div className='group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-sky-500/50 animate-scaleIn stagger-6'>
+              <div className='absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
+              <div className='relative z-10'>
+                <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-100 mb-4 group-hover:scale-110 transition-transform duration-300'>
+                  <ShieldCheck size={20} />
+                </div>
+                <h3 className='font-bold text-slate-900 dark:text-white mb-2'>
+                  Provides types metadata convention
+                </h3>
+                <p className='text-sm text-slate-600 dark:text-slate-400'>
+                  A JSON Schema defines the shape of data but not how to
+                  process it. GTS adds{' '}
+                  <code className='text-blue-500 dark:text-blue-400'>
+                    x-gts-traits
+                  </code>{' '}
+                  — type-level metadata such as retention policies, PII-masking
+                  directives, indexing hints, and stream/topic associations.
+                  Traits are inherited along the type chain, so platform-wide
+                  defaults propagate automatically to every derived type.
                 </p>
               </div>
             </div>
