@@ -574,7 +574,7 @@ gts.x.core.events.type.v1~x.core._.audit_event.v1~xyz.*
 
 # A query predicate uses an exact value; combine it with a separate wildcard
 # policy pattern rather than embedding '*' inside the query
-gts.x.ui.left_menu.menu_item.v1[screen_type="gts.x.ui.core_ui.screens.v1~abc.home.v1"]`}
+gts.x.ui.left_menu.menu_item.v1[screen_type="gts.x.ui.core_ui.screens.v1~abc.web._.home.v1"]`}
         />
 
         <p className='mb-6 text-sm text-slate-600 dark:text-slate-400'>
@@ -646,7 +646,7 @@ gts.x.core.events.type.v1~*
 
 # Query predicates use exact values; apply wildcard matching separately
 # in the policy pattern rather than embedding '*' in the query
-gts.x.ui.left_menu.menu_item.v1[screen_type="gts.x.ui.core_ui.screens.v1~abc.home.v1"]`}
+gts.x.ui.left_menu.menu_item.v1[screen_type="gts.x.ui.core_ui.screens.v1~abc.web._.home.v1"]`}
         />
         <div className='bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg border border-amber-200 dark:border-amber-800 mb-8'>
           <h5 className='font-bold text-amber-800 dark:text-amber-200'>
@@ -1539,7 +1539,7 @@ print(uuid.uuid5(GTS_NS, "gts.x.core.events.type.v1~"))`}
           code={`{
   "id": "7a1d2f34-5678-49ab-9012-abcdef123456",
   "type": "gts.x.core.events.type.v1~x.commerce.orders.order_placed.v1~",
-  "occurredAt": "2025-09-20T18:35:00Z",
+  "timestamp": 1758393300,
   "payload": { "orderId": "ORD-123", "amount": 99.99 }
 }`}
         />
@@ -2436,7 +2436,10 @@ gts.x.core.events.type.v1~x.core.audit.event.v1~abc.app.store.purchase_audit.v1~
       }
     }
   },
-  "properties": { ... }
+  "properties": {
+    "id": { "type": "string" },
+    "type": { "type": "string" }
+  }
 }`}
         />
 
@@ -2510,9 +2513,9 @@ gts.x.core.events.type.v1~x.core.audit.event.v1~abc.app.store.purchase_audit.v1~
               language='json'
               code={`{
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "gts://gts.x.core.config.v1~",
+  "$id": "gts://gts.x.core.system.config.v1~",
   "x-gts-final": true,
-  ...
+  "type": "object"
 }`}
             />
             <p className='text-xs text-red-600 dark:text-red-400 mt-2'>
@@ -2533,7 +2536,7 @@ gts.x.core.events.type.v1~x.core.audit.event.v1~abc.app.store.purchase_audit.v1~
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "gts://gts.x.core.events.type.v1~",
   "x-gts-abstract": true,
-  ...
+  "type": "object"
 }`}
             />
             <p className='text-xs text-purple-600 dark:text-purple-400 mt-2'>
@@ -2712,7 +2715,7 @@ gts.x.core.events.type.v1~x.core._.audit_event.v1~xyz.*
 
 # Query predicates use exact values; apply wildcard matching separately
 # in the policy pattern rather than embedding '*' in the query
-gts.x.ui.left_menu.menu_item.v1[screen_type="gts.x.ui.core_ui.screens.v1~abc.home.v1"]
+gts.x.ui.left_menu.menu_item.v1[screen_type="gts.x.ui.core_ui.screens.v1~abc.web._.home.v1"]
 
 # Match all types in a package
 gts.vendor.package.*
@@ -3163,7 +3166,7 @@ gts.x.core.events.type.v1~*`}
           title='Prompt Template Schema'
           code={`{
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "gts://gts.x.prompts.summarize.v1~",
+  "$id": "gts://gts.x.ai.prompts.summarize.v1~",
   "title": "Summarization Prompt",
   "type": "object",
   "properties": {
