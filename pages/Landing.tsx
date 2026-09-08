@@ -199,21 +199,21 @@ export const Landing: React.FC = () => {
               data schemas and instances across teams, vendors, and runtimes.
             </p>
             <div className='space-x-4 animate-slideUp stagger-3'>
-              <Link
-                to='/docs/introduction'
+              <a
+                href='https://github.com/GlobalTypeSystem/gts-spec/blob/main/README.md'
+                target='_blank'
+                rel='noreferrer'
                 className='inline-flex items-center justify-center rounded-lg text-sm font-medium transition-all duration-300 h-11 px-8 bg-brand-600 text-white hover:bg-brand-700 hover:scale-105 hover:shadow-xl shadow-lg shadow-brand-500/20 animate-glow'
               >
                 Read the Spec
                 <ArrowRight size={16} className='ml-2' />
-              </Link>
-              <a
-                href='https://github.com/GlobalTypeSystem'
-                target='_blank'
-                rel='noreferrer'
+              </a>
+              <Link
+                to='/docs/introduction'
                 className='inline-flex items-center justify-center rounded-lg text-sm font-medium transition-all duration-300 h-11 px-8 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900 hover:scale-105 text-slate-900 dark:text-slate-100'
               >
-                View on GitHub
-              </a>
+                View the docs
+              </Link>
             </div>
             <p className='text-sm text-slate-500 dark:text-slate-400 italic mt-4 animate-fadeIn stagger-4'>
               Built for CTOs, architects, and engineering leaders.<br />
