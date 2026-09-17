@@ -907,7 +907,7 @@ export const Landing: React.FC = () => {
                 See GTS VS Code plugin in action
               </h4>
               <p className='mt-1 text-sm text-slate-600 dark:text-slate-400'>
-                The GTS VS Code plugin discovers GTS schemas and instances in JSON, JSONC, and YAML files with a project, validates identifiers and references, and visualizes relationships between entities.
+                The GTS VS Code plugin discovers GTS schemas and instances in JSON, JSONC, and YAML files within a project, validates identifiers and references, and visualizes relationships between entities.
               </p>
               <div className='mt-4 grid grid-cols-2 gap-2 sm:grid-cols-5'>
                 {VSCODE_SCREENSHOTS.map((screenshot, index) => (
