@@ -189,7 +189,7 @@ export const Landing: React.FC = () => {
           >
             <div className='rounded-2xl bg-slate-100 dark:bg-slate-900 px-4 py-1.5 text-sm font-medium text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 animate-fadeIn flex items-center gap-2'>
               <Sparkles size={14} className='text-brand-500' />
-              Draft Version 0.14 is now available
+              Draft Version 0.17 is now available
             </div>
             <h1 className='font-sans text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-5xl md:text-6xl lg:text-7xl animate-slideUp stagger-1'>
               Global Type System <br className='hidden sm:inline' />
